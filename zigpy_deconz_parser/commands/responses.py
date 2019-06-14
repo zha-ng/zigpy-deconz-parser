@@ -126,9 +126,10 @@ class ApsDataIndication(pt.Command):
 class ApsDataRequest(pt.Command):
     _lpad = pt.LPAD
 
-    SCHEMA = (t.uint16_t,  # payload length
-              pt.DeviceState,  # Device state
-              t.uint8_t,  # request_id
+    SCHEMA = (
+        t.uint16_t,  # payload length
+        pt.DeviceState,  # Device state
+        t.uint8_t,  # request_id
     )
 
     payload_length = attr.ib(factory=SCHEMA[0])
@@ -143,5 +144,53 @@ class ApsDataRequest(pt.Command):
             format(self.request_id).ljust( self._lpad, '<')
         print(headline + ' ' +
               'Device State: 0x{:02x}'.format(self.device_state))
+
+
+@attr.s
+class ApsDataConfirm(pt.Command):
+    SCHEMA = (
+        t.uint16_t,  # payload length
+        pt.DeviceState,  # Device State
+        t.uint8_t,  # Request ID
+        dt.DeconzAddressEndpoint,  # Destination address
+        t.uint8_t,  # Source endpoint
+        pt.ConfirmStatus,  # Confirm Status
+        t.uint8_t,  # Reserved below
+        t.uint8_t,
+        t.uint8_t,
+        t.uint8_t,
+    )
+
+    payload_length = attr.ib(factory=SCHEMA[0])
+    device_state = attr.ib(factory=SCHEMA[1])
+    request_id = attr.ib(factory=SCHEMA[2])
+    dst_addr = attr.ib(factory=SCHEMA[3])
+    src_ep = attr.ib(factory=SCHEMA[4])
+    confirm_status = attr.ib(factory=SCHEMA[5])
+    reserved_1 = attr.ib(factory=SCHEMA[6])
+    reserved_2 = attr.ib(factory=SCHEMA[7])
+    reserved_3 = attr.ib(factory=SCHEMA[8])
+    reserved_4 = attr.ib(factory=SCHEMA[9])
+
+    def pretty_print(self, *args):
+        self.print("Payload length: {}".format(self.payload_length))
+        self.print("Device State: {}".format(self.device_state))
+
+        headline = "\t\t    Request id: [0x{:02x}] ". \
+            format(self.request_id).ljust(self._lpad, '<')
+        print(headline + ' ' + str(self.dst_addr))
+        if self.dst_addr.address_mode in (2, 4):
+            self.print("NWK: 0x{:04x}".format(self.dst_addr.address))
+
+        self.print("Src endpoint: {}".format(self.src_ep))
+        self.print("TX Status: {}".format(str(self.confirm_status)))
+        r = "reserved_1: 0x{:02x} Shall be ignored"
+        self.print(r.format(self.reserved_1))
+        r = "reserved_2: 0x{:02x} Shall be ignored"
+        self.print(r.format(self.reserved_2))
+        r = "reserved_3: 0x{:02x} Shall be ignored"
+        self.print(r.format(self.reserved_3))
+        r = "reserved_4: 0x{:02x} Shall be ignored"
+        self.print(r.format(self.reserved_4))
 
 

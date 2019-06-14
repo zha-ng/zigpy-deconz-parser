@@ -103,8 +103,10 @@ class ApsDataRequest(pt.Command):
         self.print("Payload length: {}".format(self.payload_length))
 
         headline = "\t\t    Request id: [0x{:02x}] ".\
-            format(self.request_id).ljust( self._lpad, '>')
+            format(self.request_id).ljust(self._lpad, '>')
         print(headline + ' ' + str(self.dst_addr))
+        if self.dst_addr.address_mode in (2, 4):
+            self.print("NWK: 0x{:04x}".format(self.dst_addr.address))
 
         self.print("flags: 0x{:02x}".format(self.flags))
         self.print("Profile id: 0x{:04x}".format(self.profile))

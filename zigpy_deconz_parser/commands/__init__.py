@@ -22,5 +22,6 @@ RESPONSES = {
     pt.DeConzCommand.DEVICE_STATE_CHANGED: responses.DeviceStateChanged,
     pt.DeConzCommand.APS_DATA_INDICATION: responses.ApsDataIndication,
     pt.DeConzCommand.APS_DATA_REQUEST: responses.ApsDataRequest,
+    pt.DeConzCommand.APS_DATA_CONFIRM: responses.ApsDataConfirm,
 }
 
