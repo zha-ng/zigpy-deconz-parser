@@ -43,14 +43,14 @@ class WriteParameter(pt.Command):
 
 @attr.s
 class DeviceState(pt.Command):
-    SCHEMA = (t.uint8_t, t.uint8_t, t.uint8_t, )
+    SCHEMA = (pt.DeviceState, t.uint8_t, t.uint8_t, )
 
     device_state = attr.ib(factory=SCHEMA[0])
     reserved_2 = attr.ib(factory=SCHEMA[1])
     reserved_3 = attr.ib(factory=SCHEMA[2])
 
     def pretty_print(self, *args):
-        self.print("Device State: {}".format(self.device_state))
+        self.device_state.pretty_print()
         self.print("Reserved: {} Shall be ignored".format(self.reserved_2))
         self.print("Reserved: {} Shall be ignored".format(self.reserved_3))
 

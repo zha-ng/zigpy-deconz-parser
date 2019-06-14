@@ -184,6 +184,32 @@ class DeviceState(t.uint8_t):
 
     def pretty_print(self, *args):
         self.print("Device State: 0x{:02x}".format(self))
+        net_state = NetworkState(self & 0x03)
+        self.print(
+            'Dev state: {} -- {}'.format(self._mask(0x03), str(net_state)))
+        self.print(
+            'Dev state: {} -- APSDE-DATA.confirm'.format(self._mask(0x04))
+        )
+        self.print(
+            'Dev state: {} -- APSDE-DATA.indication'.format(self._mask(0x08))
+        )
+        self.print(
+            'Dev state: {} -- Configuration Changed'.format(self._mask(0x10))
+        )
+        self.print(
+            'Dev state: {} -- APSDE free slots'.format(self._mask(0x20))
+        )
+
+    def _mask(self, mask: int) -> str:
+        binary = '{:08b}'.format(self)
+        masked = ''
+        for bit in binary[::-1]:
+            if mask & 0x01:
+                masked = bit + masked
+            else:
+                masked = '.' + masked
+            mask = mask >> 1
+        return masked[:4] + ' ' + masked[4:]
 
 
 class ApsDataIndicationFlags(t.uint8_t, enum.Enum):
