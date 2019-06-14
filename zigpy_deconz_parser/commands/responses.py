@@ -102,7 +102,7 @@ class ApsDataIndication(pt.Command):
 
     def pretty_print(self, *args):
         self.print("Payload length: {}".format(self.payload_length))
-        self.print("Device State: {}".format(self.device_state))
+        self.device_state.pretty_print()
         self.print("Dst address: {}".format(self.dst_addr))
         if self.dst_addr.address_mode in (1, 2, 4):
             self.print("Dst address: 0x{:04x}".format(self.dst_addr.address))
@@ -142,12 +142,12 @@ class ApsDataRequest(pt.Command):
 
     def pretty_print(self, *args):
         self.print("Payload length: {}".format(self.payload_length))
-        self.device_state.pretty_print()
 
         headline = "\t\t    Request id: [0x{:02x}] ". \
             format(self.request_id).ljust( self._lpad, '<')
-        print(headline + ' ' +
-              'Device State: 0x{:02x}'.format(self.device_state))
+        print(headline + ' ' + '^^^ Above status ^^^')
+
+        self.device_state.pretty_print()
 
 
 @attr.s
@@ -178,7 +178,7 @@ class ApsDataConfirm(pt.Command):
 
     def pretty_print(self, *args):
         self.print("Payload length: {}".format(self.payload_length))
-        self.print("Device State: {}".format(self.device_state))
+        self.device_state.pretty_print()
 
         headline = "\t\t    Request id: [0x{:02x}] ". \
             format(self.request_id).ljust(self._lpad, '<')
