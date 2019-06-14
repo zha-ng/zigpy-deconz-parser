@@ -104,8 +104,12 @@ class ApsDataIndication(pt.Command):
         self.print("Payload length: {}".format(self.payload_length))
         self.print("Device State: {}".format(self.device_state))
         self.print("Dst address: {}".format(self.dst_addr))
+        if self.dst_addr.address_mode in (1, 2, 4):
+            self.print("Dst address: 0x{:04x}".format(self.dst_addr.address))
         self.print("Dst endpoint {}".format(self.dst_ep))
         self.print("Src address: {}".format(self.src_addr))
+        if self.src_addr.address_mode in (1, 2, 4):
+            self.print("Src address: 0x{:04x}".format(self.src_addr.address))
         self.print("Src endpoint: {}".format(self.src_ep))
         self.print("Profile id: 0x{:04x}".format(self.profile))
         self.print("Cluster id: 0x{:04x}".format(self.cluster_id))
@@ -179,7 +183,7 @@ class ApsDataConfirm(pt.Command):
         headline = "\t\t    Request id: [0x{:02x}] ". \
             format(self.request_id).ljust(self._lpad, '<')
         print(headline + ' ' + str(self.dst_addr))
-        if self.dst_addr.address_mode in (2, 4):
+        if self.dst_addr.address_mode in (1, 2, 4):
             self.print("NWK: 0x{:04x}".format(self.dst_addr.address))
 
         self.print("Src endpoint: {}".format(self.src_ep))
