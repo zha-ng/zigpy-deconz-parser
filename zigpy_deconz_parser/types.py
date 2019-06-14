@@ -4,6 +4,8 @@ import enum
 import attr
 import zigpy.types as t
 
+LPAD = 30
+
 
 @attr.s(frozen=True)
 class UndefEnum:
@@ -116,7 +118,7 @@ class DeconzParameter(t.uint8_t, enum.Enum):
 
 
 class Header(t.Struct):
-    _lpad = 30
+    _lpad = LPAD
 
     _fields = [
         ('command', DeConzCommand),
@@ -152,7 +154,7 @@ class Header(t.Struct):
 @attr.s
 class Command:
     SCHEMA = ()
-    _lpad = 30
+    _lpad = LPAD
 
     @classmethod
     def deserialize(cls, data):
