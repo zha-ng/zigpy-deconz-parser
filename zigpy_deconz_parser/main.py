@@ -4,8 +4,6 @@ import sys
 
 import zigpy_deconz_parser.parser as parser
 
-IF_NAME = '/home/ha/.homeassistant/home-assistant.log'
-
 
 def main():
     argv = sys.argv[1:]
@@ -23,11 +21,11 @@ def main():
         elif opt in ('-i', '--in-file'):
             infile = args
 
-    if infile is None:
-        help()
-        sys.exit(2)
-
-    proccess(infile)
+    if infile in (None, '-'):
+        proccess(sys.stdin)
+    else:
+        with open(infile, mode='r') as file:
+            proccess(file)
 
 
 if __name__ == '__main__':
@@ -35,10 +33,9 @@ if __name__ == '__main__':
 
 
 def proccess(file):
-    with open(file, mode='r') as file:
-        for line in file:
-            print(line.strip())
-            parser.parse(line)
+    for line in file:
+        print(line.strip())
+        parser.parse(line)
 
 
 def help():
