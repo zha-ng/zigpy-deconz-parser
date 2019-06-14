@@ -72,7 +72,7 @@ class DeviceStateChanged(pt.Command):
     device_state = attr.ib(factory=SCHEMA[0])
 
     def pretty_print(self, *args):
-        self.print("Device State: {}".format(str(self.device_state)))
+        self.device_state.pretty_print()
 
 
 @attr.s
@@ -110,9 +110,9 @@ class ApsDataIndication(pt.Command):
         self.print("Profile id: 0x{:04x}".format(self.profile))
         self.print("Cluster id: 0x{:04x}".format(self.cluster_id))
         self.print("ASDU: {}".format(self.asdu))
-        r = "reserved_1: 0x{:02x} Shall be ignored/Last hop since prot. ver 0x0108"
+        r = "reserved_1: 0x{:02x} Shall be ignored/Last hop since proto ver 0x0108"
         self.print(r.format(self.reserved_1))
-        r = "reserved_2: 0x{:02x} Shall be ignored/Last hop since prot. ver 0x0108"
+        r = "reserved_2: 0x{:02x} Shall be ignored/Last hop since proto ver 0x0108"
         self.print(r.format(self.reserved_2))
         self.print("LQI: {}".format(self.lqi))
         self.print("reserved_3: 0x{:02x} Shall be ignored".format(self.reserved_3))
@@ -120,4 +120,28 @@ class ApsDataIndication(pt.Command):
         self.print("reserved_5: 0x{:02x} Shall be ignored".format(self.reserved_5))
         self.print("reserved_6: 0x{:02x} Shall be ignored".format(self.reserved_6))
         self.print("RSSI: {}".format(self.rssi))
+
+
+@attr.s
+class ApsDataRequest(pt.Command):
+    _lpad = pt.LPAD
+
+    SCHEMA = (t.uint16_t,  # payload length
+              pt.DeviceState,  # Device state
+              t.uint8_t,  # request_id
+    )
+
+    payload_length = attr.ib(factory=SCHEMA[0])
+    device_state = attr.ib(factory=SCHEMA[1])
+    request_id = attr.ib(factory=SCHEMA[2])
+
+    def pretty_print(self, *args):
+        self.print("Payload length: {}".format(self.payload_length))
+        self.device_state.pretty_print()
+
+        headline = "\t\t    Request id: [0x{:02x}] ". \
+            format(self.request_id).ljust( self._lpad, '<')
+        print(headline + ' ' +
+              'Device State: 0x{:02x}'.format(self.device_state))
+
 

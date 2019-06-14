@@ -176,10 +176,28 @@ class Bytes(bytes):
 
 
 class DeviceState(t.uint8_t):
-    pass
+    _lpad = LPAD
+
+    @classmethod
+    def print(cls, line):
+        print('\t\t' + ' ' * (cls._lpad - 1) + line)
+
+    def pretty_print(self, *args):
+        self.print("Device State: 0x{:02x}".format(self))
 
 
 class ApsDataIndicationFlags(t.uint8_t, enum.Enum):
     SRC_ADDR_NWK = 0x01
     LAST_HOP = 0x02
     INCLUDE_IEEE = 0x04
+
+
+class ApsTxOptions(t.uint8_t):
+    _lpad = LPAD
+
+    @classmethod
+    def print(cls, line):
+        print('\t\t' + ' ' * (cls._lpad - 1) + line)
+
+    def pretty_print(self, *args):
+        self.print("TX Options: 0x{:02x}".format(self))

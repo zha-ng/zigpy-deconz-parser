@@ -9,6 +9,8 @@ REQUESTS = {
     pt.DeConzCommand.DEVICE_STATE: requests.DeviceState,
     pt.DeConzCommand.CHANGE_NETWORK_STATE: requests.ChangeNetworkState,
     pt.DeConzCommand.APS_DATA_INDICATION: requests.ApsDataIndication,
+    pt.DeConzCommand.APS_DATA_REQUEST: requests.ApsDataRequest,
+    pt.DeConzCommand.APS_DATA_CONFIRM: requests.ApsDataConfirm,
 }
 
 RESPONSES = {
@@ -19,5 +21,6 @@ RESPONSES = {
     pt.DeConzCommand.CHANGE_NETWORK_STATE: responses.ChangeNetworkState,
     pt.DeConzCommand.DEVICE_STATE_CHANGED: responses.DeviceStateChanged,
     pt.DeConzCommand.APS_DATA_INDICATION: responses.ApsDataIndication,
+    pt.DeConzCommand.APS_DATA_REQUEST: responses.ApsDataRequest,
 }
 
