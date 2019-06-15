@@ -1,4 +1,5 @@
 import attr
+import binascii
 
 import zigpy.types as t
 import zigpy_deconz.types as dt
@@ -112,7 +113,7 @@ class ApsDataRequest(pt.Command):
         self.print("Profile id: 0x{:04x}".format(self.profile))
         self.print("Cluster id: 0x{:04x}".format(self.cluster_id))
         self.print("Src endpoint: {}".format(self.src_ep))
-        self.print("ASDU: {}".format(self.asdu))
+        self.print("ASDU: {}".format(binascii.hexlify(self.asdu)))
         self.tx_options.pretty_print()
         self.print("Radius: {}".format(self.radius))
 
@@ -125,5 +126,3 @@ class ApsDataConfirm(pt.Command):
 
     def pretty_print(self, *args):
         self.print("Payload length: {}".format(self.payload_length))
-
-

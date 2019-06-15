@@ -113,7 +113,7 @@ class ApsDataIndication(pt.Command):
         self.print("Src endpoint: {}".format(self.src_ep))
         self.print("Profile id: 0x{:04x}".format(self.profile))
         self.print("Cluster id: 0x{:04x}".format(self.cluster_id))
-        self.print("ASDU: {}".format(self.asdu))
+        self.print("ASDU: {}".format(binascii.hexlify(self.asdu)))
         r = "reserved_1: 0x{:02x} Shall be ignored/Last hop since proto ver 0x0108"
         self.print(r.format(self.reserved_1))
         r = "reserved_2: 0x{:02x} Shall be ignored/Last hop since proto ver 0x0108"
@@ -197,4 +197,21 @@ class ApsDataConfirm(pt.Command):
         r = "reserved_4: 0x{:02x} Shall be ignored"
         self.print(r.format(self.reserved_4))
 
+
+@attr.s
+class MacPoll(pt.Command):
+    SCHEMA = (t.uint16_t, dt.DeconzAddress, t.uint8_t, t.int8s, )
+
+    payload_length = attr.ib(factory=SCHEMA[0])
+    some_address = attr.ib(factory=SCHEMA[1])
+    lqi = attr.ib(factory=SCHEMA[2])
+    rssi = attr.ib(factory=SCHEMA[3])
+
+    def pretty_print(self, *args):
+        self.print("Payload length: {}".format(self.payload_length))
+        self.print("Address: {}".format(self.some_address))
+        if self.some_address.address_mode in (1, 2, 4):
+            self.print("Address: 0x{:04x}".format(self.some_address.address))
+        self.print("LQI: {}".format(self.lqi))
+        self.print("RSSI: {}".format(self.rssi))
 
