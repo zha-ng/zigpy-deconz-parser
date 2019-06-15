@@ -215,3 +215,12 @@ class MacPoll(pt.Command):
         self.print("LQI: {}".format(self.lqi))
         self.print("RSSI: {}".format(self.rssi))
 
+
+@attr.s
+class ZGPDataInd(pt.Command):
+    SCHEMA = (t.LongOctetString, )
+
+    payload = attr.ib(factory=t.LongOctetString)
+
+    def pretty_print(self, *args):
+        self.print('Payload: {}'.format(binascii.hexlify(self.payload)))

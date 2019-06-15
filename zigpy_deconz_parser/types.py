@@ -46,7 +46,7 @@ class DeConzCommand(t.uint8_t, enum.Enum):
     APS_DATA_REQUEST = 0x12
     APS_DATA_INDICATION = 0x17
     MAC_POLL = 0x1c
-    ZIGBEE_GREEN_POWER = 0x19
+    ZGP_DATA_IND = 0x19
 
     @classmethod
     def deserialize(cls, data):
