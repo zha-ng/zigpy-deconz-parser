@@ -103,7 +103,21 @@ class ApsDataIndication(pt.Command):
     def pretty_print(self, *args):
         self.print("Payload length: {}".format(self.payload_length))
         self.device_state.pretty_print()
-        self.print("Dst address: {}".format(self.dst_addr))
+
+        if self.profile == 0 and self.dst_ep == 0:
+            # ZDO
+            request_id = t.uint8_t.deserialize(self.asdu)[0]
+        else:
+            # ZCL
+            frame_control = self.asdu[0]
+            if frame_control & 0b0100:
+                request_id = self.asdu[3]
+            else:
+                request_id = self.asdu[1]
+        headline = "\t\t    Request id: [0x{:02x}] ". \
+            format(request_id).ljust(self._lpad, '<')
+        print(headline + ' Dst Addr: {}'.format(self.dst_addr))
+
         if self.dst_addr.address_mode in (1, 2, 4):
             self.print("Dst address: 0x{:04x}".format(self.dst_addr.address))
         self.print("Dst endpoint {}".format(self.dst_ep))
@@ -224,3 +238,23 @@ class ZGPDataInd(pt.Command):
 
     def pretty_print(self, *args):
         self.print('Payload: {}'.format(binascii.hexlify(self.payload)))
+
+
+@attr.s
+class SimpleBeacon(pt.Command):
+    SCHEMA = (t.uint16_t, t.NWK, t.NWK, t.uint8_t, t.uint8_t, t.uint8_t, )
+
+    payload_length = attr.ib(factory=SCHEMA[0])
+    SrcNWK = attr.ib(factory=SCHEMA[1])
+    PanId = attr.ib(factory=SCHEMA[2])
+    channel = attr.ib(factory=SCHEMA[3])
+    flags = attr.ib(factory=SCHEMA[4])
+    updateId = attr.ib(factory=SCHEMA[5])
+
+    def pretty_print(self, *args):
+        self.print("Payload length: {}".format(self.payload_length))
+        self.print("Source NWK: {}".format(self.SrcNWK))
+        self.print("PAN ID: {}".format(self.PanId))
+        self.print("Channel: {}".format(self.channel))
+        self.print("Flags: 0x{:02x}".format(self.flags))
+        self.print("Update id: 0x{:02x}".format(self.updateId))

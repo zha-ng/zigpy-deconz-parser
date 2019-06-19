@@ -25,5 +25,6 @@ RESPONSES = {
     pt.DeConzCommand.APS_DATA_CONFIRM: responses.ApsDataConfirm,
     pt.DeConzCommand.MAC_POLL: responses.MacPoll,
     pt.DeConzCommand.ZGP_DATA_IND: responses.ZGPDataInd,
+    pt.DeConzCommand.SIMPLE_BEACON: responses.SimpleBeacon,
 }
 

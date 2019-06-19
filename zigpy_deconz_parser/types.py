@@ -47,6 +47,7 @@ class DeConzCommand(t.uint8_t, enum.Enum):
     APS_DATA_INDICATION = 0x17
     MAC_POLL = 0x1c
     ZGP_DATA_IND = 0x19
+    SIMPLE_BEACON = 0x1f
 
     @classmethod
     def deserialize(cls, data):
