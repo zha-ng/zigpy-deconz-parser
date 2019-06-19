@@ -43,7 +43,7 @@ class WriteParameter(pt.Command):
 
 @attr.s
 class DeviceState(pt.Command):
-    SCHEMA = (pt.DeviceState, t.uint8_t, t.uint8_t, )
+    SCHEMA = (pt.DeviceState, t.uint8_t, t.Optional(t.uint8_t), )
 
     device_state = attr.ib(factory=SCHEMA[0])
     reserved_2 = attr.ib(factory=SCHEMA[1])
@@ -158,7 +158,7 @@ class ApsDataRequest(pt.Command):
         self.print("Payload length: {}".format(self.payload_length))
 
         headline = "\t\t    Request id: [0x{:02x}] ". \
-            format(self.request_id).ljust( self._lpad, '<')
+            format(self.request_id).ljust(self._lpad, '<')
         print(headline + ' ' + '^^^ Above status ^^^')
 
         self.device_state.pretty_print()
